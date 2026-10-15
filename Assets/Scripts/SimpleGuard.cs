@@ -21,8 +21,6 @@ public class SimpleGuard : EnemyBase
         {
             Vector2 dir = enemyEyes.CurrentLocation - (Vector2)mover.transform.position;
             mover.SetMoveInput(dir.normalized);
-            path = null;
-            pathIndex = 0;
             lastGoalNode = null;   
             repathTimer = 0;
             return;
@@ -32,8 +30,7 @@ public class SimpleGuard : EnemyBase
         {
             repathTimer = repathInterval;
             Node goal = pathfinder.Grid.GetNodeFromWorldPosition(enemyEyes.CurrentLocation);
-            // Retry failed or exhausted routes, even when the goal cell has not changed.
-            if (goal != lastGoalNode || path == null || pathIndex >= path.Count)
+            if (goal != lastGoalNode)
             {
                 lastGoalNode = goal;
                 Node start = pathfinder.Grid.GetNodeFromWorldPosition(mover.transform.position);
@@ -45,8 +42,8 @@ public class SimpleGuard : EnemyBase
 
         if (path == null)
         {
-            // The direct route was blocked; wait for the next path attempt.
-            mover.Stop();
+            Vector2 straightDir = enemyEyes.CurrentLocation - (Vector2)transform.position;
+            mover.SetMoveInput(straightDir);
             return;
         }
         if (pathIndex < path.Count)

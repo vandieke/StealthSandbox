@@ -27,13 +27,13 @@ public class EnemyBase : MonoBehaviour
     protected float repathTimer;
     protected Node lastGoalNode;
     [SerializeField] protected LayerMask obstacleMask;   
+    [SerializeField] protected float agentRadius = 0.3f;
 
     protected bool HasClearLine()
     {
         Vector2 from = mover.transform.position;
         Vector2 toPlayer = enemyEyes.CurrentLocation - from;
-        // Use the same clearance as the grid, rather than a second radius setting.
-        return !Physics2D.CircleCast(from, pathfinder.Grid.AgentRadius, toPlayer.normalized, toPlayer.magnitude, obstacleMask);
+        return !Physics2D.CircleCast(from, agentRadius, toPlayer.normalized, toPlayer.magnitude, obstacleMask);
     }
 
     protected enum EnemyState {
@@ -75,8 +75,6 @@ public class EnemyBase : MonoBehaviour
         lastKnownLocationTimer = 0;
         repathTimer = 0;
         lastGoalNode = null;
-        path = null;
-        pathIndex = 0;
         mover.Stop();
     }
     #region Behavior

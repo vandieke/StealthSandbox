@@ -15,7 +15,6 @@ public class NavigationGrid2D : MonoBehaviour
     public Node[,] Nodes { get; private set; }
     public Vector2Int GridSize => gridSize;
     public float CellSize => cellSize;
-    public float AgentRadius => agentRadius;
     private static readonly Vector2Int[] offsets =
     {
         Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right
